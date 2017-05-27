@@ -1,2 +1,15 @@
 <h1><%= title %></h1>
-<p>Welcome to <%= title %></p>
+
+<% if (successMessage.length > 0 ) { %>
+  <div class="success"><%= successMessage %> </div>
+
+<% } %>
+
+<% if (typeof user !== 'undefined') { %>
+  <h1> Hello, <%= user.name %>. </h1>
+<% } %>
+
+
+<p>Welcome to the homepage <%= title %></p>
+
+<img src="https://media3.giphy.com/media/C2tMjXY2EtOP6/giphy.gif">

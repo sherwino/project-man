@@ -6,9 +6,20 @@ const cookieParser = require('cookie-parser');
 const bodyParser   = require('body-parser');
 const layouts      = require('express-ejs-layouts');
 const mongoose     = require('mongoose');
+const session      = require('express-session');
+const passport     = require('passport');
+const User         = require('./models/usermod.js'); //
+const flash        = require('connect-flash');
 
+//load our environment variables from the .end file in dev
+// this is for dev only but in prod it just doesn't do anything
+require('dotenv').config();
 
-mongoose.connect('mongodb://localhost/project-man');
+//tell node to run the code contained in this file
+//this sets up passport and all our strategies
+require('./config/passport-config.js');
+
+mongoose.connect(process.env.MONGODB_URI);
 
 const app = express();
 
@@ -17,8 +28,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // default value for title local
-app.locals.title = 'Express - Generated with IronGenerator';
-
+app.locals.title = 'Project-Man';
+//
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -27,9 +38,47 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(layouts);
+app.use(session({
+  secret: 'project man application',
+  //these two options are going to be used not to prevent warnings
+  resave: true,
+  saveUninitialized: true
+}) );
+
+//these need to come after the session middleware----as seen above ^^^^
+
+app.use(flash()); //need to use this after the session was created
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use((req, res, next) => {
+  if (req.user) {
+    //creates a variable "user" FOR ALL THE VIEWS... yaaay
+    res.locals.user = req.user;
+  }
+  next();
+});
+
+
+
+
+///----------------------------ROUTES HERE ---------------------------
+
 
 const index = require('./routes/index');
 app.use('/', index);
+
+const loginRoutes = require('./routes/login.js');
+app.use('/', myAuthRoutes);
+
+const userRoutes = require('./routes/users.js');
+app.use('/', myUserRoutes);
+
+const projectRoutes = require('./routes/projects.js');
+app.use('/', myRoomRoutes);
+
+///-------------------------ROUTES ABOVE ------------------------------
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

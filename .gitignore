@@ -28,3 +28,12 @@ node_modules
 
 # Debug log from npm
 npm-debug.log
+
+# Ignore uploaded files
+public/uploads
+
+# Ignore Secrets
+config/secret.js
+
+#Ignore development environment variables
+.env
