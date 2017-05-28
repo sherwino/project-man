@@ -1,7 +1,7 @@
 const express   = require('express');
 const bcrypt    = require('bcrypt');
 const passport  = require('passport');
-const User      = require('../models/user-model.js');
+const User      = require('../models/usermod.js');
 const ensure    = require('connect-ensure-login');
 
 const authRoutes = express.Router();
@@ -17,7 +17,7 @@ authRoutes.get('/signup',
   //   res.redirect('/');
   //   return;
   // }
-  res.render('auth/signup-view.ejs');
+  res.render('login/signup.ejs');
 });
 
 
@@ -28,7 +28,7 @@ authRoutes.post('/signup', (req, res, next) => {
 
 //Don't let users submit blank usernames or passwords
   if (signUsername === '' || signPassword === '') {
-    res.render('auth/signup-view.ejs', {
+    res.render('login/signup.ejs', {
       errorMessage: 'Please provide both a username and a password sucka'
     });
     return;
@@ -49,7 +49,7 @@ authRoutes.post('/signup', (req, res, next) => {
       }
     //Don't let the user regiter if the username is taken
       if (foundUser) {
-        res.render('auth/signup-view.ejs', {
+        res.render('login/signup.ejs', {
           errorMessage: 'Username is taken, dude'
         });
         return;
@@ -91,7 +91,7 @@ authRoutes.post('/signup', (req, res, next) => {
 });
 
 authRoutes.get('/login', (req, res, next) => {
-  res.render('auth/login-view.ejs', {
+  res.render('login/login.ejs', {
     errorMessage:   req.flash('error')
   });
 

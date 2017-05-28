@@ -2,14 +2,14 @@ const express = require('express');
 const ensure = require('connect-ensure-login');
 const bcrypt = require('bcrypt');
 
-const User = require('../models/user-model');
+const User = require('../models/usermod.js');
 
-const routerThingy = express.Router();
+const routerObject = express.Router();
 
 ensure.ensureLoggedIn();
 ensure.ensureNotLoggedIn();
 
-routerThingy.get('/profile/edit',
+routerObject.get('/profile/edit',
 //redirects to /login if you are not logged in
 ensure.ensureLoggedIn('/login'),
 
@@ -19,14 +19,14 @@ ensure.ensureLoggedIn('/login'),
   //   res.reditect('/login');
   //   return;
   // }
-  res.render('./user/edit-profile-view.ejs', {
+  res.render('./profile/edit-profile.ejs', {
     successMessage: req.flash('success')
     });
   }
 );
 
 
-routerThingy.post('/profile/edit',
+routerObject.post('/profile/edit',
   ensure.ensureLoggedIn('/login'),
 
   (req, res, next) => {
@@ -34,7 +34,7 @@ routerThingy.post('/profile/edit',
     const profileName         = req.body.profileName;
     const profileUsername     = req.body.profileUsername;
     const currentPassword     = req.body.profileCurrentPassword;
-    const newPassword = req.body.profileNewPassword;
+    const newPassword         = req.body.profileNewPassword;
 
     User.findOne(
       {username: profileUsername },
@@ -47,7 +47,7 @@ routerThingy.post('/profile/edit',
 
          // if there's a user with the username and it's not you
         if (foundUser && !foundUser._id.equals(req.user._id)) {
-          res.render('user/edit-profile-view.ejs', {
+          res.render('./profile/edit-profile.ejs', {
             errorMessage: 'Username already taken.'
           });
           return;
@@ -107,4 +107,4 @@ routerThingy.post('/profile/edit',
 }
 );
 
-module.exports = routerThingy;
+module.exports = routerObject;

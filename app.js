@@ -70,13 +70,13 @@ const index = require('./routes/index');
 app.use('/', index);
 
 const loginRoutes = require('./routes/login.js');
-app.use('/', myAuthRoutes);
+app.use('/', loginRoutes);
 
 const userRoutes = require('./routes/users.js');
-app.use('/', myUserRoutes);
+app.use('/', userRoutes);
 
 const projectRoutes = require('./routes/projects.js');
-app.use('/', myRoomRoutes);
+app.use('/', projectRoutes);
 
 ///-------------------------ROUTES ABOVE ------------------------------
 

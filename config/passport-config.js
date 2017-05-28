@@ -1,6 +1,6 @@
 //need to look over this
 
-const User = require('../models/user-model.js');
+const User = require('../models/usermod.js');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 const FbStrategy = require('passport-facebook').Strategy;

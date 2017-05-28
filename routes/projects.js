@@ -4,7 +4,7 @@ const router    = express.Router();
 const multer    = require('multer');
 const path      = require('path');
 
-const Room      = require('../models/room-model.js');
+const Projects     = require('../models/projectmod.js');
 
 //no need to get the id in the url/form because you have that info in the session
 router.get('/rooms/new',

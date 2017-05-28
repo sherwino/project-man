@@ -1,9 +1,24 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background: linear-gradient(to right, #00d2ff, #3a7bd5);
+  background: url('../images/bg.jpg');
   color: white;
 }
+
+
+.overlay-container {
+    background: linear-gradient(to right, #00d2ff, #3a7bd5);
+    height: 900px;
+    opacity: 0.2;
+}
+
+.inner {
+  padding: 0px;
+  margin: 20px;
+  position: absolute;
+  top: 180px;
+}
+
 nav {
   position: absolute;
   top: 10px;
@@ -43,6 +58,12 @@ nav a.active {
   cursor: default;
 }
 
+.nav-title {
+  margin-left: 550px;
+  float: right;
+  font-size: 20px;
+}
+
 .success {
   background-color: turquoise;
   color: black;
@@ -67,7 +88,7 @@ header {
   background: white;
 }
 
-form {
+/*form {
 	padding: 20px 0;
 	position: relative;
 	z-index: 2;
@@ -123,7 +144,7 @@ input, #room-desc-input {
 		}
 	}
 }
-
+*/
 
 img {
   width: 100%;
