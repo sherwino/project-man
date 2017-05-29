@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 
-// const User = require('./user-model.js');
+const User = require('./usermod.js');
 
 const Schema = mongoose.Schema;
 
 const projectSchema = new Schema(
   {
+    jobYear:        Number,
     jobNumber:      String,
     jobName:        String,
     jobClient:      String,
@@ -19,7 +20,17 @@ const projectSchema = new Schema(
     jobGasperm:     String,
     jobElecperm:    String,
     jobOtherPerm:   String,
-    
+    jobChangeorder: String,
+    jobReimburse:   String,
+    jobPayroll:     String,
+    jobSubExp:      String,
+    jobAmtInv:      String,
+    jobAmtRec:      String,
+    jobAmtDue:      String,
+    jobAmtRem:      String,
+    jobProfit:      String,
+    jobCurrProfit:  String,
+    jobMaterialExp: String,
 
     //reference the id of the user
     createdBy:          { type: Schema.Types.ObjectId }
