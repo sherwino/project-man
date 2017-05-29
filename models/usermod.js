@@ -4,37 +4,20 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-//fields/structure of the documents
-//----ALL USERS
+const userSchema = new Schema(
+  {
   name: {
-    type: String,
+    type:     String,
     required: [true, "You need to enter a name"]
-  },
+        },
+  email:      String,
+  password:   String,
+  img:        String,
+  admin:      Boolean
 
-//----------TRADITIONAL REGISTRATION USERS
-  username: {
-    type: String,
-
-  },
-
-  encryptedPassword: {
-    type: String,
-    // required: [true, "Please enter a password, now."] <---- CANT USE WITH TOKENS
-  },
-//----------TRADITIONAL FACEBOOK USERS
-  facebookID: { type: String },
-//----------TRADITIONAL FACEBOOK USERS
-  googleID: { type: String },
-
-},
-// 2nd arguments -> additional options
-{
-
-  timestamps: true // adds createdAt and updatedAt fields
 }
 
-);
+); //closes userSchema
 
 const User = mongoose.model('User', userSchema);
 

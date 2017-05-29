@@ -37,3 +37,6 @@ config/secret.js
 
 #Ignore development environment variables
 .env
+
+# Ignore reference and resource links
+resources

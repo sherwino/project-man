@@ -16,24 +16,39 @@
 
   <body>
     <header>
-      <nav>
-      <ul>
-        <span><li><a href="/">Home </a></li></span>
-        <% if (typeof user !== 'undefined') { %>
-          <span><li> <a href="/rooms"> Rooms </a> </li></span>
-          <span><li><a href ="/logout">Log Out </a> </li>
-          <span><li><a href ="/profile/edit">Edit Profile </a> </li>
-
-        <% } else { %>
-
-          <span><li><a href="/signup"> Sign Up </a> </li></span>
-          <span><li><a href="/login"> Log In </a> </li></span>
-        <% } %>
-      </ul>
-    <span class="nav-title"><h1>Project-Man Application</h1></span>
-    </nav>
-
+      <nav class="navbar navbar-default navbar-fixed-top navStyle">
+      	<div class="container-fluid">
+      		<div class="navbar-header">
+      			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-42BNhS428O39c">
+      				<span class="icon-bar"></span>
+      				<span class="icon-bar"></span>
+      				<span class="icon-bar"></span>
+      			</button>
+      			<a class="navbar-brand" href="/">Project Man</a>
+      		</div>
+      		<div class="collapse navbar-collapse" id="navbar-42BNhS428O39c">
+      			<ul class="nav navbar-nav navbar-right">
+              <% if (typeof user !== 'undefined') { %>
+        			    <li><a href="/log">Job Log</a></li>
+        			    <li><a href="/tasks">Task List</a></li>
+        			    <li><a href="/time">Time Sheet</a></li>
+        			    <li><a href="/expense">Expense Reports</a></li>
+        			    <li><a href ="/logout">Log Out</a></li>
+              <% } %>
+              <% if (typeof user == 'admin') { %>
+                  <li><a href="/reports">Financial Reports</a></li>
+                  <li><a href="/users">Users</a></li>
+                  <li><a href="/expense">Expense Reports</a></li>
+              <% } else { %>
+                  <li><a href="/signup"> Sign Up </a></li>
+                  <li><a href="/login"> Log In </a></li>
+                <% } %>
+      			</ul>
+      		</div>
+      	</div>
+      </nav>
     </header>
+
     <br>
     <br>
     <br>
