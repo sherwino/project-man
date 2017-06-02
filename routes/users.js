@@ -64,14 +64,14 @@ routerObject.post('/profile/edit',
 
 
         //if both passwords are filled and the current password is correct
-        if (currentPassword && newPassword && bcrypt.compareSync(currentPassword, req.usesr.enctryptedPassword)) {
+        if (currentPassword && newPassword && bcrypt.compareSync(currentPassword, req.user.encryptedPassword)) {
           //then add the new encryptedPassword to the updates
 
           // if (bcrypt.compareSync(profileCurrentPassword, req.user.encryptedPassword)) {
             const salt = bcrypt.genSaltSync(10);
             const hashPass = bcrypt.hashSync(newPassword, salt);
           //profileChanges.encrypted Password = hashpass;
-            req.user.enctryptedPassword = hashPass;
+            req.user.encryptedPassword = hashPass;
           }
 
           //save all the updates!

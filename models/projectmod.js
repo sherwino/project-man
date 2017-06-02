@@ -12,7 +12,7 @@ const projectSchema = new Schema(
     jobClient:      String,
     jobSubs:        String,
     jobType:        String,
-    jobFee:         Number,
+    jobFee:         String,
     jobAddress:     String,
     jobMasterperm:  String,
     jobPlbperm:     String,
@@ -31,6 +31,8 @@ const projectSchema = new Schema(
     jobProfit:      String,
     jobCurrProfit:  String,
     jobMaterialExp: String,
+    jobRenderImg:   String,
+    jobImg:         String,
 
     //reference the id of the user
     createdBy:          { type: Schema.Types.ObjectId }

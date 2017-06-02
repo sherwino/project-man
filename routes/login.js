@@ -2,6 +2,7 @@ const express   = require('express');
 const bcrypt    = require('bcrypt');
 const passport  = require('passport');
 const User      = require('../models/usermod.js');
+const LocalStrategy = require('passport-local').Strategy;
 const ensure    = require('connect-ensure-login');
 
 const authRoutes = express.Router();
@@ -12,24 +13,19 @@ authRoutes.get('/signup',
   ensure.ensureNotLoggedIn('/'),
 
   (req, res, next) => {
-
-  // if (req.user) {
-  //   res.redirect('/');
-  //   return;
-  // }
   res.render('login/signup.ejs');
 });
 
 
 authRoutes.post('/signup', (req, res, next) => {
-  const signName     = req.body.signupName;
-  const signUsername = req.body.signupUsername;
-  const signPassword = req.body.signupPassword;
+  const signName      = req.body.signupName;
+  const signEmail     = req.body.signupEmail;
+  const signPassword  = req.body.signupPassword;
 
 //Don't let users submit blank usernames or passwords
-  if (signUsername === '' || signPassword === '') {
+  if (signEmail === '' || signPassword === '') {
     res.render('login/signup.ejs', {
-      errorMessage: 'Please provide both a username and a password sucka'
+      errorMessage: 'Please provide a username and password.'
     });
     return;
   }
@@ -37,9 +33,9 @@ authRoutes.post('/signup', (req, res, next) => {
 //IF YOU WANT TO CHECK PASSWORD LENGTH, CHARACTERS, ETC YOU WOULD DO IT HERE
   User.findOne(
     //first argument is the criteria which documents you want
-    { username: signUsername },
+    { email: signEmail },
     //second argument is the projection, which field you want to see
-    { username: 1 },
+    { email: 1 },
     //third argument callback
     ( err, foundUser ) => {
     //see if the db query had an error
@@ -50,7 +46,7 @@ authRoutes.post('/signup', (req, res, next) => {
     //Don't let the user regiter if the username is taken
       if (foundUser) {
         res.render('login/signup.ejs', {
-          errorMessage: 'Username is taken, dude'
+          errorMessage: 'That username has been taken.'
         });
         return;
       }
@@ -63,8 +59,8 @@ authRoutes.post('/signup', (req, res, next) => {
     //create the user
       const theUser = new User({
         name:               signName,
-        username:           signUsername,
-        encryptedPassword:  hashPass
+        email:              signEmail,
+        password:           hashPass
 
       });
       //save the use to the db, unless if there is an error
@@ -120,19 +116,19 @@ authRoutes.get('/logout', (req, res, next) => {
 //-----------------FACEBOOK LOGIN ROUTES
 // it is getting 'facebook' from.... FBStrategy
 //the url could be called whatever you want
- authRoutes.get('/auth/facebook', passport.authenticate('facebook'));
+ authRoutes.get('/login/facebook', passport.authenticate('facebook'));
 
 //link to this address to log in with facebook
 //where facebook goes after the user has accepted/rejected terms
 // callbackURL: '/auth/facebook/callback'
 
- authRoutes.get('/auth/facebook/callback', passport.authenticate('facebook', {
+ authRoutes.get('/login/facebook/callback', passport.authenticate('facebook', {
    successRedirect:     '/',
    failureRedirect:     '/login'
    //here you could add the flash messagge
  }));
 
- authRoutes.get('/auth/google', passport.authenticate('google', {
+ authRoutes.get('/login/google', passport.authenticate('google', {
    scope: [
      "https://www.googleapis.com/auth/plus.login",
      "https://www.googleapis.com/auth/plus.profile.emails.read"
@@ -141,7 +137,7 @@ authRoutes.get('/logout', (req, res, next) => {
  }));
 
 
- authRoutes.get('/auth/google/callback', passport.authenticate('google', {
+ authRoutes.get('/login/google/callback', passport.authenticate('google', {
    successRedirect:     '/',
    failureRedirect:     '/login'
    //here you could add the flash messagge

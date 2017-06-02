@@ -7,8 +7,9 @@ const bodyParser   = require('body-parser');
 const layouts      = require('express-ejs-layouts');
 const mongoose     = require('mongoose');
 const session      = require('express-session');
+const LocalStrategy = require('passport-local').Strategy;
 const passport     = require('passport');
-const User         = require('./models/usermod.js'); //
+const User         = require('./models/usermod.js');
 const flash        = require('connect-flash');
 
 //load our environment variables from the .end file in dev
@@ -19,6 +20,7 @@ require('dotenv').config();
 //this sets up passport and all our strategies
 require('./config/passport-config.js');
 
+// mongoose.connect('mongodb://localhost/projectman');
 mongoose.connect(process.env.MONGODB_URI);
 
 const app = express();
@@ -39,8 +41,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(layouts);
 app.use(session({
-  secret: 'project man application',
-  //these two options are going to be used not to prevent warnings
+  key: "user-session",
+  secret: 'supermeng77',
+  cookie:
+  {
+    maxAge: 10000,//Life of the cookie in ms
+    // path: '/'
+  },
+  // these two options are there to prevent warnings
   resave: true,
   saveUninitialized: true
 }) );
@@ -66,7 +74,7 @@ app.use((req, res, next) => {
 ///----------------------------ROUTES HERE ---------------------------
 
 
-const index = require('./routes/index');
+const index = require('./routes/index.js');
 app.use('/', index);
 
 const loginRoutes = require('./routes/login.js');
@@ -77,6 +85,7 @@ app.use('/', userRoutes);
 
 const projectRoutes = require('./routes/projects.js');
 app.use('/', projectRoutes);
+
 
 ///-------------------------ROUTES ABOVE ------------------------------
 

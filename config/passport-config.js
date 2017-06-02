@@ -44,108 +44,6 @@ passport.deserializeUser((userId, cb) => {
 // const passportLocal = require('passport-local');
 // const LocalStrategy = passportLocal.Strategy;
 
-
-passport.use( new FbStrategy(
-{
-  //don't commit this
-  clientID:       process.env.FB_APP_ID,
-  clientSecret:   process.env.FB_APP_SECRET,
-  callbackURL:    '/auth/facebook/callback'
-},
-
-(accessToken, refreshToken, profile, done) => { //address for a route in our app
-
-  console.log('');
-  console.log('FACEBOOK PROFILE ------->');
-  console.log(profile);
-  console.log('');
-
-  User.findOne(
-    { facebookID: profile.id },
-
-    (err, foundUser) => {
-        if (err) {
-          done(err);
-          return;
-        }
-
-        if (foundUser) { //this logs in the user
-          done(null, foundUser);
-          return;
-        }
-
-        //register the user if they are not registered
-        const theUser = new User({
-          facebookID:   profile.id,
-          name:         profile.displayName
-        });
-
-        theUser.save((err) => {
-          if (err) {
-            done(err);
-            return;
-          }
-          done(null, theUser);
-        });
-    }
-  );
-
-}
-) );
-
-passport.use (new GoogleStrategy(
-  {
-    //don't commit this here
-    clientID:         process.env.GOOG_APP_ID,
-    clientSecret:     process.env.GOOG_APP_SECRET,
-    callbackURL:         '/auth/google/callback'
-  },
-  (accessToken, refreshToken, profile, done) => {
-
-      console.log('');
-      console.log('GOOGLE PROFILE ------->');
-      console.log(profile);
-      console.log('');
-
-    User.findOne(
-      { googleID:     profile.id },
-
-      (err, foundUser) => {
-
-      if (err) {
-        done(err);
-        return;
-      }
-
-      if (foundUser) {
-        done(null, foundUser);
-        return;
-      }
-
-      const theUser = new User({
-        googleID:     profile.id,
-        name:         profile.displayName
-      });
-
-      //if user doesn't have a name on profile, save the email as the name
-      if (!theUser.name) {
-        theUser.name = profile.emails[0].value;
-      }
-      theUser.save((err) => {
-        if(err) {
-          done(err);
-          return;
-        }
-        done(null, theUser);
-      });
-  }
-);
-
-}
-
-) );
-
-
 passport.use( new LocalStrategy (
   // 1st arg are just the options to customize the LocalStrategy
   //LocalStrategy assumes that you loginforms are going to be named <input name="username" <input name="password"
@@ -175,14 +73,14 @@ passport.use( new LocalStrategy (
 
         //at this point the username is correct... so the next step is to check the password
         //bcrypt receives two arguments, the variable you are checking for and the original encryptedPassword
-        if(!bcrypt.compareSync(loginPassword, theUser.encryptedPassword )) {
+        if(!bcrypt.compareSync(loginPassword, theUser.password )) {
           // false in 2nd argument means log in Failed
           next(null, false, { message: 'You sure you remember your password'});
           return;
         }
         //when we get to this point of the code....we have passed all of the validations
         //then we give passport the user's details, because there hasn't been an error
-        next(null, theUser, { message: `Welcome ${theUser.username}`});
+        next(null, theUser, { message: `Welcome ${theUser.name}`});
               // this user goes ot passport.serializeUser
       });
     }
