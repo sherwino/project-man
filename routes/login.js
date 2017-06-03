@@ -43,7 +43,7 @@ authRoutes.post('/signup', (req, res, next) => {
         next(err);
         return;
       }
-    //Don't let the user regiter if the username is taken
+    //Don't let the user register if the username is taken
       if (foundUser) {
         res.render('login/signup.ejs', {
           errorMessage: 'That username has been taken.'
@@ -112,35 +112,5 @@ authRoutes.get('/logout', (req, res, next) => {
   req.flash('success', 'You have logged out successfully');
   res.redirect('/');
 });
-
-//-----------------FACEBOOK LOGIN ROUTES
-// it is getting 'facebook' from.... FBStrategy
-//the url could be called whatever you want
- authRoutes.get('/login/facebook', passport.authenticate('facebook'));
-
-//link to this address to log in with facebook
-//where facebook goes after the user has accepted/rejected terms
-// callbackURL: '/auth/facebook/callback'
-
- authRoutes.get('/login/facebook/callback', passport.authenticate('facebook', {
-   successRedirect:     '/',
-   failureRedirect:     '/login'
-   //here you could add the flash messagge
- }));
-
- authRoutes.get('/login/google', passport.authenticate('google', {
-   scope: [
-     "https://www.googleapis.com/auth/plus.login",
-     "https://www.googleapis.com/auth/plus.profile.emails.read"
-  ]
-
- }));
-
-
- authRoutes.get('/login/google/callback', passport.authenticate('google', {
-   successRedirect:     '/',
-   failureRedirect:     '/login'
-   //here you could add the flash messagge
- }));
 
 module.exports = authRoutes;

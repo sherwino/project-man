@@ -11,7 +11,11 @@ const LocalStrategy = require('passport-local').Strategy;
 const passport     = require('passport');
 const User         = require('./models/usermod.js');
 const flash        = require('connect-flash');
-
+// routes being called.....below
+const index          = require('./routes/index.js');
+const loginRoutes    = require('./routes/login.js');
+const userRoutes     = require('./routes/users.js');
+const projectRoutes  = require('./routes/projects.js');
 //load our environment variables from the .end file in dev
 // this is for dev only but in prod it just doesn't do anything
 require('dotenv').config();
@@ -42,7 +46,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(layouts);
 app.use(session({
   key: "user-session",
-  secret: 'supermeng77',
+  secret: 'supermeng99',
   cookie:
   {
     maxAge: 10000,//Life of the cookie in ms
@@ -74,16 +78,13 @@ app.use((req, res, next) => {
 ///----------------------------ROUTES HERE ---------------------------
 
 
-const index = require('./routes/index.js');
+
 app.use('/', index);
 
-const loginRoutes = require('./routes/login.js');
 app.use('/', loginRoutes);
 
-const userRoutes = require('./routes/users.js');
 app.use('/', userRoutes);
 
-const projectRoutes = require('./routes/projects.js');
 app.use('/', projectRoutes);
 
 

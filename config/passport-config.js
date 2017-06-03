@@ -1,14 +1,9 @@
 //need to look over this
 
-const User = require('../models/usermod.js');
-const passport = require('passport');
-const bcrypt = require('bcrypt');
-const FbStrategy = require('passport-facebook').Strategy;
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const User          = require('../models/usermod.js');
+const passport      = require('passport');
+const bcrypt        = require('bcrypt');
 const LocalStrategy = require('passport-local').Strategy;
-
-
-
 
 
 // function passportSetup () {
@@ -50,13 +45,13 @@ passport.use( new LocalStrategy (
   //if it doesn't match what the passport assumes you have to define the names of the inputs below
   {
     //the usernameField is a STD key from passport it has to always be named this way
-    usernameField: 'loginUsername',  //<----you could only customize the string
-    passwordField: 'loginPassword'
+    usernameField: 'user',  //<----you could only customize the string
+    passwordField: 'password'
    },
   //2nd argument is a callback for the lofic that validates the login
-  (loginUsername, loginPassword, next) => {
+  (user, password, next) => {
     User.findOne(
-      { username: loginUsername },
+      { email: user },
       (err, theUser ) => {
         // tell passport if there was an error
         if (err) {
@@ -73,7 +68,7 @@ passport.use( new LocalStrategy (
 
         //at this point the username is correct... so the next step is to check the password
         //bcrypt receives two arguments, the variable you are checking for and the original encryptedPassword
-        if(!bcrypt.compareSync(loginPassword, theUser.password )) {
+        if(!bcrypt.compareSync(password, theUser.password )) {
           // false in 2nd argument means log in Failed
           next(null, false, { message: 'You sure you remember your password'});
           return;
