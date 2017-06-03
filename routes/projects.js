@@ -12,7 +12,10 @@ projectRouter.get('/projects/new',
   ensure.ensureLoggedIn('/login'),
 
   (req, res, next) => {
-    res.render('projects/new-project-view.ejs');
+    res.render('projects/new-project-view.ejs', {
+      title:    'Project Man - Add a project',
+      layout:   'layouts/list-layout'
+    });
 
 });
 // you should use s3 for production
@@ -78,7 +81,7 @@ projectRouter.post('/projects',
 
 
 projectRouter.get('/projects',
-  ensure.ensureLoggedIn(),
+  ensure.ensureLoggedIn('/login'),
 
   (req, res, next ) => {
     Project.find({}, //give me all of the projects
@@ -89,6 +92,8 @@ projectRouter.get('/projects',
         return;
       }
       res.render('projects/project-list-view.ejs', {
+        title:    'Project Man - Project Log',
+        layout:   'layouts/list-layout',
         projects:           projectsList,
         successMessage:     req.flash('success')
       });

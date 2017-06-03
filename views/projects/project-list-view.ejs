@@ -16,9 +16,32 @@
 				<th>
 					Job Type
 				</th>
+        <!-- FROM HERE ON.....ONLY ADMINS COULD VIEW THIS -->
+        if (user.role == 'admin') {
+        <th>
+          Job Fee
+        </th>
+        <th>
+          Job Expenses
+        </th>
+        <th>
+          Amt Invoiced
+        </th>
+        <th>
+          Amt Received
+        </th>
+        <th>
+          Est Profit
+        </th>
+        <th>
+          %
+        </th>
+        }
+        <!-- END OF ADMIN ZONE -->
 			</tr>
 		</thead>
 		<tbody>
+      <!-- THIS IS WHERE THE PROJECTS AUTO-POPULATE INTO THE VIEW -->
 			<tr>
 				<td>
 					2017190
@@ -32,63 +55,29 @@
 				<td>
 					MEP Design
 				</td>
-			</tr>
-			<tr>
-				<td>
-					2017191
-				</td>
-				<td>
-					Corner Bakery - Winter Haven
-				</td>
-				<td>
-					WHA Architects
-				</td>
-				<td>
-					MEPF Design
-				</td>
-			</tr>
-			<tr>
-				<td>
-					2017192
-				</td>
-				<td>
-					OSII Building - KSC
-				</td>
-				<td>
-					ECSG LLC
-				</td>
-				<td>
-					LEED Commissioning
-				</td>
-			</tr>
-			<tr>
-				<td>
-					2017193
-				</td>
-				<td>
-					MetroZoo Hippo Chamber
-				</td>
-				<td>
-					ELM Arch
-				</td>
-				<td>
-					MEPF Design
-				</td>
-			</tr>
-			<tr>
-				<td>
-					2017194
-				</td>
-				<td>
-					Zappa Residence
-				</td>
-				<td>
-					Kobi Karp Arch
-				</td>
-				<td>
-					MEP & Structural Design
-				</td>
-			</tr>
+      <!-- FROM HERE ON.....ONLY ADMINS COULD VIEW THIS -->
+      if (user.role == 'admin') {
+        <td>
+          $178,000.00
+        </td>
+        <td>
+          $20,789.76
+        </td>
+        <td>
+          $95,000.00
+        </td>
+        <td>
+          $95,000.00
+        </td>
+        <td>
+          $74,210.24
+        </td>
+        <td>
+          78.11%
+        </td>
+        }
+      <!-- END OF ADMIN ZONE -->
+    </tr>
 		</tbody>
 	</table>
 </div>

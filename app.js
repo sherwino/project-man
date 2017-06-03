@@ -49,7 +49,7 @@ app.use(session({
   secret: 'supermeng99',
   cookie:
   {
-    maxAge: 10000,//Life of the cookie in ms
+    // maxAge: 10000000,//Life of the cookie in ms
     // path: '/'
   },
   // these two options are there to prevent warnings
