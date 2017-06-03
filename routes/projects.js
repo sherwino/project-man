@@ -3,13 +3,13 @@ const ensure           = require('connect-ensure-login');
 const projectRouter    = express.Router();
 const multer           = require('multer');
 const path             = require('path');
-const Projects         = require('../models/projectmod.js');
+const Project         = require('../models/projectmod.js');
 const myUploader       = multer ({ dest: path.join(__dirname, '../public/uploads') });
 
 //no need to get the id in the url/form because you have that info in the session
 projectRouter.get('/projects/new',
-//we need to be logged in to create projects
-  // ensure.ensureLoggedIn('/login'),
+// we need to be logged in to create projects
+  ensure.ensureLoggedIn('/login'),
 
   (req, res, next) => {
     res.render('projects/new-project-view.ejs');

@@ -13,7 +13,7 @@ router.get('/', (req, res, next) => {
   console.log('\n');
   console.log('USER (from passport middleware)');
   console.log(req.user);
-// 
+//
 // $(document).ready( () => {
 // console.log('jQuery Loaded');
 //
@@ -21,7 +21,9 @@ router.get('/', (req, res, next) => {
 
 
   res.render('index', {
-    successMessage:   req.flash('success')
+    successMessage:   req.flash('success'),
+
+
   });
 });
 

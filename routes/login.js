@@ -1,11 +1,10 @@
-const express   = require('express');
-const bcrypt    = require('bcrypt');
-const passport  = require('passport');
-const User      = require('../models/usermod.js');
+const express       = require('express');
+const bcrypt        = require('bcrypt');
+const passport      = require('passport');
+const User          = require('../models/usermod.js');
 const LocalStrategy = require('passport-local').Strategy;
-const ensure    = require('connect-ensure-login');
-
-const authRoutes = express.Router();
+const ensure        = require('connect-ensure-login');
+const authRoutes    = express.Router();
 
 // ROUTES GO HERE
 authRoutes.get('/signup',
@@ -13,7 +12,10 @@ authRoutes.get('/signup',
   ensure.ensureNotLoggedIn('/'),
 
   (req, res, next) => {
-  res.render('login/signup.ejs');
+  res.render('login/signup.ejs', {
+    title:    'Project Man - Signup',
+    layout:   'layouts/signup-layout'
+  });
 });
 
 
@@ -53,7 +55,7 @@ authRoutes.post('/signup', (req, res, next) => {
     //once you get to this point you should be able to save the user
 
     //encrypt the password that the user submitted
-      const salt = bcrypt.genSaltSync(10);
+      const salt     = bcrypt.genSaltSync(10);
       const hashPass = bcrypt.hashSync(signPassword, salt);
 
     //create the user
@@ -88,6 +90,8 @@ authRoutes.post('/signup', (req, res, next) => {
 
 authRoutes.get('/login', (req, res, next) => {
   res.render('login/login.ejs', {
+    title:          'Project Man - Login',
+    layout:         'layouts/signup-layout',
     errorMessage:   req.flash('error')
   });
 

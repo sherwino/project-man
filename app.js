@@ -68,6 +68,7 @@ app.use((req, res, next) => {
   if (req.user) {
     //creates a variable "user" FOR ALL THE VIEWS... yaaay
     res.locals.user = req.user;
+
   }
   next();
 });
@@ -107,5 +108,6 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;
