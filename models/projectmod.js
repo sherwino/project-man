@@ -31,7 +31,7 @@ const projectSchema = new Schema(
     jobProfit:      String,
     jobCurrProfit:  String,
     jobMaterialExp: String,
-    jobRenderImg:   String,
+    jobImgName:     String,
     jobImg:         String,
 
     //reference the id of the user

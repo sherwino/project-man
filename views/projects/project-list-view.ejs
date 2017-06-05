@@ -17,7 +17,7 @@
 					Job Type
 				</th>
         <!-- FROM HERE ON.....ONLY ADMINS COULD VIEW THIS -->
-        if (user.role == 'admin') {
+        <% if (user.role == 'admin') { %>
         <th>
           Job Fee
         </th>
@@ -36,49 +36,68 @@
         <th>
           %
         </th>
-        }
+				<th>
+
+        </th>
+				<th>
+
+        </th>
+        <% } %>
         <!-- END OF ADMIN ZONE -->
 			</tr>
 		</thead>
 		<tbody>
       <!-- THIS IS WHERE THE PROJECTS AUTO-POPULATE INTO THE VIEW -->
-			<tr>
-				<td>
-					2017190
-				</td>
-				<td>
-					Federal Reserve of Atlanta
-				</td>
-				<td>
-					GSA
-				</td>
-				<td>
-					MEP Design
-				</td>
-      <!-- FROM HERE ON.....ONLY ADMINS COULD VIEW THIS -->
-      if (user.role == 'admin') {
-        <td>
-          $178,000.00
-        </td>
-        <td>
-          $20,789.76
-        </td>
-        <td>
-          $95,000.00
-        </td>
-        <td>
-          $95,000.00
-        </td>
-        <td>
-          $74,210.24
-        </td>
-        <td>
-          78.11%
-        </td>
-        }
-      <!-- END OF ADMIN ZONE -->
-    </tr>
-		</tbody>
-	</table>
-</div>
-</div>
+				<% projects.forEach((job) => { %>
+					<tr>
+						<td>
+							<a href="/projects/<%= job._id %>"><%= job.jobNumber %></a>
+						</td>
+						<td>
+							<a href="/projects/<%= job._id %>"><%= job.jobName %></a>
+						</td>
+						<td>
+							<a href="/projects/<%= job.jobClient %>"><%= job.jobClient %></a>
+						</td>
+						<td>
+							<a href="/projects/<%= job.jobType %>"><%= job.jobType %></a>
+						</td>
+						<!-- FROM HERE ON.....ONLY ADMINS COULD VIEW THIS -->
+						<% if (user.role == 'admin') { %>
+							<td>
+								<%= job.jobFee %>
+							</td>
+							<td>
+								<!-- The math my end up being done elsewhere so that we could save to DB  -->
+								<% let expenses = job.jobSubExp + job.jobPayroll + job.jobMaterialExp + job.jobReimburse %>
+								<%= expenses %>
+							</td>
+							<td>
+								<%= job.jobAmtInv %>
+							</td>
+							<td>
+								<%= job.jobAmtRec %>
+							</td>
+							<td>
+								<%= job.jobProfit %>
+							</td>
+							<td>
+								<!-- The math my end up being done elsewhere so that we could save to DB  -->
+								25%
+							</td>
+							<td>
+								<a href="/projects/<%= job._id %>/edit"><span class="glyphicon glyphicon-edit"></span></a>
+							</td>
+							<td>
+								<a href="/projects/<%= job._id %>/delete"><span class="glyphicon glyphicon-remove"></span></a>
+							</td>
+
+						<% } %>
+						<!-- END OF ADMIN ZONE -->
+
+					</tr>
+					<% }) %>
+				</tbody>
+			</table>
+		</div>
+	</div>

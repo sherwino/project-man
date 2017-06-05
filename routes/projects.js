@@ -3,10 +3,14 @@ const ensure           = require('connect-ensure-login');
 const projectRouter    = express.Router();
 const multer           = require('multer');
 const path             = require('path');
-const Project         = require('../models/projectmod.js');
+const Project          = require('../models/projectmod.js');
 const myUploader       = multer ({ dest: path.join(__dirname, '../public/uploads') });
+const year             = new Date().getFullYear();
 
 //no need to get the id in the url/form because you have that info in the session
+
+// CREATE NEW PROJECT ROUTE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// This route and layout shows the form and everything needed to create project
 projectRouter.get('/projects/new',
 // we need to be logged in to create projects
   ensure.ensureLoggedIn('/login'),
@@ -14,44 +18,45 @@ projectRouter.get('/projects/new',
   (req, res, next) => {
     res.render('projects/new-project-view.ejs', {
       title:    'Project Man - Add a project',
-      layout:   'layouts/list-layout'
+      layout:   'layouts/list-layout',
+      currYear:  year
     });
 
 });
-// you should use s3 for production
 
+// POST/SEND NEW PROJECT TO DB ROUTE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 projectRouter.post('/projects',
   ensure.ensureLoggedIn('/login'),
 
   //<input type="file name ="projectPhoto">
                       //  |
-  myUploader.single('jobPhoto'),
+  myUploader.single('jobImg'),
 
   (req, res, next) => {
 
     console.log('FILE UPLOAD ------');
     console.log(req.file);
-
+    // res.status(204).end();
     const theProject = new Project ({
 
       //the key is from the model, and the value is from the input form
-      jobYear:        req.body.f4,
-      jobNumber:      req.body.f7,
-      jobName:        req.body.f5,
-      jobClient:      req.body.f8,
-      jobSubs:        req.body.f9,
-      jobType:        req.body.f10,
-      jobFee:         req.body.f14,
+      jobYear:        req.body.jobYear,
+      jobNumber:      req.body.jobNumber,
+      jobName:        req.body.jobName,
+      jobClient:      req.body.jobClient,
+      jobSubs:        req.body.jobSubs,
+      jobType:        req.body.jobType,
+      jobFee:         req.body.jobFee,
       jobImg:         `/uploads/${req.file.filename}`,
-      // jobRenderImg:   `/uploads/${req.file.filename}`,
-      jobAddress:     req.body.f15,
-      jobMasterperm:  req.body.f16,
-      jobPlbperm:     req.body.f17,
-      jobMechperm:    req.body.f18,
-      jobGasperm:     req.body.f19,
-      jobElecperm:    req.body.f20,
-      jobOtherPerm:   req.body.f21,
-      jobChangeorder: req.body.f22,
+      // jobRenderImg:   `/uploads/${req.body.picName}`,
+      jobAddress:     req.body.jobAddress,
+      jobMasterperm:  req.body.jobMasterperm,
+      jobPlbperm:     req.body.jobPlbperm,
+      jobMechperm:    req.body.jobMechperm,
+      jobGasperm:     req.body.jobGasperm,
+      jobElecperm:    req.body.jobElecperm,
+      jobOtherPerm:   req.body.jobOtherPerm,
+      jobChangeorder: req.body.jobChangeorder,
       jobReimburse:   req.body.jobReimburse,
       jobPayroll:     req.body.jobPayroll,
       jobSubExp:      req.body.jobSubExp,
@@ -67,6 +72,7 @@ projectRouter.post('/projects',
     });
 
     theProject.save((err) => {
+      console.log('attempted to post form into DB');
       if (err) {
         next(err);
         return;
@@ -79,27 +85,53 @@ projectRouter.post('/projects',
   }
 );
 
-
+// LIST OF PROJECTS ROUTE  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 projectRouter.get('/projects',
   ensure.ensureLoggedIn('/login'),
 
   (req, res, next ) => {
-    Project.find({}, //give me all of the projects
+    //give me all of the projects, but sort them
     // { owner:    req.user._id },
-    (err, projectsList) => {
+    Project
+    .find()
+    .sort( { jobNumber: 1})
+    .exec((err, projectsList) => {
       if (err) {
         next(err);
         return;
       }
       res.render('projects/project-list-view.ejs', {
-        title:    'Project Man - Project Log',
-        layout:   'layouts/list-layout',
+        title:              'Project Man - Project Log',
+        layout:             'layouts/list-layout',
         projects:           projectsList,
-        successMessage:     req.flash('success')
+        successMessage:     req.flash('success'),
+        user:               req.user
       });
+    });
+  });
+
+// SINGLE PROJECT PAGE ROUTE  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+projectRouter.get('/projects/:id/',
+  ensure.ensureLoggedIn('/login'),
+
+  (req, res, next ) => {
+
+  const projectID = req.params.id;
+
+  Project.findById(projectID, (err, theProject) => {
+    if(err) {
+      next(err);
+      return;
     }
-  );
-  }
-);
+    res.render('projects/project-detail-view.ejs', {
+      title:  `Project Man ${theProject.jobNumber}`,
+      layout: 'layouts/detail-layout',
+      job:    theProject,
+      errors: theProject.errors
+    });
+  });
+});
+
 
 module.exports = projectRouter;
