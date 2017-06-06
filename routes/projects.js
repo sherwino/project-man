@@ -1,13 +1,44 @@
 const express          = require('express');
+const aws              = require('aws-sdk');
 const ensure           = require('connect-ensure-login');
 const projectRouter    = express.Router();
 const multer           = require('multer');
+const multerS3         = require('multer-s3');
+const app              = express();
 const path             = require('path');
+const fs               = require('fs');
+                         require('dotenv').config();
 const Project          = require('../models/projectmod.js');
-const myUploader       = multer ({ dest: path.join(__dirname, '../public/uploads') });
+const s3               = new aws.S3();
 const year             = new Date().getFullYear();
 
-//no need to get the id in the url/form because you have that info in the session
+aws.config.update({
+  secretAccessKey:  process.env.AWS_ACCESS_KEY_ID,
+  accessKeyId:      process.env.AWS_SECRET_ACCESS_KEY,
+  region:           'us-east-1'
+  // awsBucket:        process.env.S3_BUCKET
+});
+
+const myUploader       = multer({
+	storage: multerS3({
+		s3: s3,
+		bucket:       process.env.S3_BUCKET,
+    dirname:      '/uploads',
+    contentType:  multerS3.AUTO_CONTENT_TYPE,
+    // body:         req.file.buffer,
+    ACL:          'public-read-write',
+    // metadata: (req, file, cb) => {
+    //   cb(null, {fieldName: file.fieldname});
+    // },
+		key: (req, file, cb) => {
+			console.log(file);
+			cb(null, Date.now().toString() + file.originalname)
+		},
+	})
+});
+
+
+
 
 // CREATE NEW PROJECT ROUTE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // This route and layout shows the form and everything needed to create project
@@ -17,7 +48,7 @@ projectRouter.get('/projects/new',
 
   (req, res, next) => {
     res.render('projects/new-project-view.ejs', {
-      title:    'Project Man - Add a project',
+      title:    'Project Man - Create a project',
       layout:   'layouts/list-layout',
       currYear:  year
     });
@@ -34,8 +65,8 @@ projectRouter.post('/projects',
 
   (req, res, next) => {
 
-    console.log('FILE UPLOAD ------');
-    console.log(req.file);
+    console.log('FILE UPLOAD ------------------------');
+    console.log('Successfully uploaded ' + req.file);
     // res.status(204).end();
     const theProject = new Project ({
 
@@ -47,7 +78,7 @@ projectRouter.post('/projects',
       jobSubs:        req.body.jobSubs,
       jobType:        req.body.jobType,
       jobFee:         req.body.jobFee,
-      jobImg:         `/uploads/${req.file.filename}`,
+      jobImg:         `${req.file.location}`,
       // jobRenderImg:   `/uploads/${req.body.picName}`,
       jobAddress:     req.body.jobAddress,
       jobMasterperm:  req.body.jobMasterperm,
@@ -79,7 +110,6 @@ projectRouter.post('/projects',
       }
 
       req.flash('success', 'Your project was saved succesfully');
-
       res.redirect('/projects');
     });
   }
@@ -131,6 +161,125 @@ projectRouter.get('/projects/:id/',
       errors: theProject.errors
     });
   });
+});
+
+// EDIT PROJECT PAGE ROUTE  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+projectRouter.get('/projects/:id/edit',
+  ensure.ensureLoggedIn('/login'),
+
+  (req, res, next) => {
+
+  const projectId   = req.params.id;
+  //search for the product defined in URL
+  Project.findById(projectId, (err, theProject) => {
+    if (err) {
+      next(err);
+      return;
+    }
+  res.render('projects/edit-project-view.ejs', {
+    title:    'Project Man - Edit project',
+    layout:   'layouts/list-layout',
+    job:       theProject,
+    errors:    theProject.errors
+  });
+});
+});
+// params gets info from a URL
+// so does query but query requires the url to be in a keyValue pair ?name=bob would be in the URL
+// body gets stuff from inputs
+//
+//                      remeber :id is just a placeholder
+//                      it could be whatever you want
+projectRouter.post('/projects/:id/edit', (req, res, next) => {
+  const projectId = req.params.id;
+
+  const projectChanges = {
+    //the key is from the model, and the value is from the input form
+    jobYear:        req.body.jobYear,
+    jobNumber:      req.body.jobNumber,
+    jobName:        req.body.jobName,
+    jobClient:      req.body.jobClient,
+    jobSubs:        req.body.jobSubs,
+    jobType:        req.body.jobType,
+    jobFee:         req.body.jobFee,
+    jobImg:         `${req.file.location}`,
+    // jobRenderImg:   `/uploads/${req.body.picName}`,
+    jobAddress:     req.body.jobAddress,
+    jobMasterperm:  req.body.jobMasterperm,
+    jobPlbperm:     req.body.jobPlbperm,
+    jobMechperm:    req.body.jobMechperm,
+    jobGasperm:     req.body.jobGasperm,
+    jobElecperm:    req.body.jobElecperm,
+    jobOtherPerm:   req.body.jobOtherPerm,
+    jobChangeorder: req.body.jobChangeorder,
+    jobReimburse:   req.body.jobReimburse,
+    jobPayroll:     req.body.jobPayroll,
+    jobSubExp:      req.body.jobSubExp,
+    jobAmtInv:      req.body.jobAmtInv,
+    jobAmtRec:      req.body.jobAmtRec,
+    jobAmtDue:      req.body.jobAmtDue,
+    jobAmtRem:      req.body.jobAmtRem,
+    jobProfit:      req.body.jobProfit,
+    jobCurrProfit:  req.body.jobCurrProfit,
+    jobMaterialExp: req.body.jobMaterialExp,
+    createdBy:      req.user._id //should add a eddited by in the model
+  };
+//this new method has three arguments
+  Project.findByIdAndUpdate(
+    projectId,                  //which document to change
+    projectChanges,             //variable of the changes you want to make
+    (err, theProject) => {      //the callback
+      if (err) {
+        next(err);
+        return;
+      }                        //end of error callback
+                              //this is how you would redired to prodcut details page
+                              // res.redirect(`/projects/${projectId}
+    res.redirect('/projects');
+    }
+  );
+});
+
+// DELETE PROJECT PAGE ROUTE  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+projectRouter.post('/projects/:id/delete', (req, res, next) => {
+//                   calling  :id
+  const projectId = req.params.id;
+
+// this does db.projects.deleteOne({ _id: projectId  })
+  Project.findByIdAndRemove(projectId, (err, theProject) => {
+    if (err) {
+      next(err);
+      return;
+    }
+
+    res.redirect('/projects');
+  });
+});
+
+projectRouter.get('/search', (req, res, next) => {
+  const searchTerm = req.query.projectSearchTerm;
+  if (!searchTerm) {
+    res.render('projects/search-view.ejs');
+    return;
+  }
+
+// "nintendo" turns in the reg expression nintendo so anything that matches would be foudn
+  const searchRegex = new RegExp(searchTerm, 'i');
+
+  Project.find(
+    { name: searchRegex },
+    (err, searchResults) => {
+      if (err) {
+        next(err);
+        return;
+      }
+        res.render('projects/search-view.ejs', {
+          projects: searchResults
+        });
+      }
+  );
 });
 
 
