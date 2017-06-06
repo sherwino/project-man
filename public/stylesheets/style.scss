@@ -6,15 +6,21 @@
 
 .body-main {
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-    background: url('../images/Project Man.svg');
+    background: url('../images/bg2.jpg');
+    // background-size: 170%;
     background-repeat: no-repeat;
-    background-size: 100%;
-    height: 100%;
-    width: 100%;
-}
+    overflow: hidden;
+    }
 
 .body-other {
     background: url('../images/bg.jpg');
+    background-size: cover;
+    height: 100%;
+}
+
+.imgScale {
+  padding: 5%;
+  size: 75%;
 }
 
 

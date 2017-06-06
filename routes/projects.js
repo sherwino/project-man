@@ -32,7 +32,7 @@ const myUploader       = multer({
     // },
 		key: (req, file, cb) => {
 			console.log(file);
-			cb(null, Date.now().toString() + file.originalname)
+			cb(null, Date.now().toString() + file.originalname);
 		},
 	})
 });
