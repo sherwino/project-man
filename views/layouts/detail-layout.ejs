@@ -34,14 +34,15 @@
       			<a class="navbar-brand" href="/">Project Man</a>
       		</div>
       		<div class="collapse navbar-collapse" id="navbar-42BNhS428O39c">
+
             <!-- SEARCHHHHHHHHHHHHHHHHHHHHH -->
             <ul class="nav navbar-nav navbar-left">
               <li><a href="#search"><span class="glyphicon glyphicon-search"></span></a></li>
             </ul>
             <div id="search">
               <button type="button" class="close">×</button>
-              <form>
-                <input type="search" value="" placeholder="Search for projects(s)" />
+              <form action="/search" method="get">
+                <input type="search" name ="projectSearchTerm" value="" placeholder="Search for projects(s)" />
                 <button type="submit" class="btn btn-success">Search</button>
               </form>
             </div>

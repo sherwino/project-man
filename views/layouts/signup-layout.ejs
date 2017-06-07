@@ -29,6 +29,18 @@
       		<div class="collapse navbar-collapse" id="navbar-42BNhS428O39c">
       			<ul class="nav navbar-nav navbar-right">
               <% if (typeof user !== 'undefined') { %>
+                <!-- SEARCHHHHHHHHHHHHHHHHHHHHH -->
+                <ul class="nav navbar-nav navbar-left">
+                  <li><a href="#search"><span class="glyphicon glyphicon-search"></span></a></li>
+                </ul>
+                <div id="search">
+                  <button type="button" class="close">×</button>
+                  <form action="/search" method="get">
+                    <input type="search" name ="projectSearchTerm" value="" placeholder="Search for projects(s)" />
+                    <button type="submit" class="btn btn-success">Search</button>
+                  </form>
+                </div>
+                  <!-- SEARCHHHHHHHHHHHHHHHHHHHHH ENDS -->
         			    <li><a href="/log">Job Log</a></li>
         			    <li><a href="/tasks">Task List</a></li>
         			    <li><a href="/time">Time Sheet</a></li>
