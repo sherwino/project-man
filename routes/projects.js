@@ -258,25 +258,33 @@ projectRouter.post('/projects/:id/delete', (req, res, next) => {
   });
 });
 
+// SEARCH PROJECT PAGE ROUTE  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 projectRouter.get('/search', (req, res, next) => {
   const searchTerm = req.query.projectSearchTerm;
   if (!searchTerm) {
-    res.render('projects/search-view.ejs');
+    res.render('projects/project-list-view.ejs');
     return;
   }
 
 // "nintendo" turns in the reg expression nintendo so anything that matches would be foudn
   const searchRegex = new RegExp(searchTerm, 'i');
+  console.log(searchRegex);
 
   Project.find(
-    { name: searchRegex },
+    { jobName: searchRegex },
     (err, searchResults) => {
       if (err) {
         next(err);
         return;
       }
-        res.render('projects/search-view.ejs', {
-          projects: searchResults
+        res.render('projects/project-list-view.ejs', {
+          title:              `Project Man - ${searchRegex}`,
+          layout:             'layouts/list-layout',
+          projects:                searchResults,
+          successMessage:     req.flash('success'),
+          user:               req.user
+
         });
       }
   );
