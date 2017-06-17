@@ -35,7 +35,8 @@ const projectSchema = new Schema(
     jobImg:         String,
 
     //reference the id of the user
-    createdBy:          { type: Schema.Types.ObjectId }
+    createdBy:          { type: Schema.Types.ObjectId },
+    updatedBy:          { type: Schema.Types.ObjectId }
 
     // this is the way I would write it if I wanted to make the user a subdoc
     // owner:          { type: User.schema }

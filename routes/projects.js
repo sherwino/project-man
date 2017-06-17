@@ -98,7 +98,8 @@ projectRouter.post('/projects',
       jobProfit:      req.body.jobProfit,
       jobCurrProfit:  req.body.jobCurrProfit,
       jobMaterialExp: req.body.jobMaterialExp,
-      createdBy:      req.user._id
+      createdBy:      req.user._id,
+      updatedBy:      req.user._id
 
     });
 
@@ -191,7 +192,7 @@ projectRouter.get('/projects/:id/edit',
 //
 //                      remeber :id is just a placeholder
 //                      it could be whatever you want
-projectRouter.post('/projects/:id/edit', (req, res, next) => {
+projectRouter.patch('/projects/:id/edit', (req, res, next) => {
   const projectId = req.params.id;
 
   const projectChanges = {
@@ -223,7 +224,8 @@ projectRouter.post('/projects/:id/edit', (req, res, next) => {
     jobProfit:      req.body.jobProfit,
     jobCurrProfit:  req.body.jobCurrProfit,
     jobMaterialExp: req.body.jobMaterialExp,
-    createdBy:      req.user._id //should add a eddited by in the model
+    createdBy:      Project.createdBy, //should add a eddited by in the model
+    updatedBy:      req.user._id
   };
 //this new method has three arguments
   Project.findByIdAndUpdate(
@@ -236,7 +238,7 @@ projectRouter.post('/projects/:id/edit', (req, res, next) => {
       }                        //end of error callback
                               //this is how you would redired to prodcut details page
                               // res.redirect(`/projects/${projectId}
-    res.redirect('/projects');
+    res.redirect('/projects/:id/');
     }
   );
 });
@@ -281,7 +283,7 @@ projectRouter.get('/search', (req, res, next) => {
         res.render('projects/project-list-view.ejs', {
           title:              `Project Man - ${searchRegex}`,
           layout:             'layouts/list-layout',
-          projects:                searchResults,
+          projects:            searchResults,
           successMessage:     req.flash('success'),
           user:               req.user
 
