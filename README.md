@@ -40,6 +40,12 @@ Here are some screenshots showing the latest version of the site.
 ### Project Log (for regular users)
 ![Project Log Page](https://screenshots.firefoxusercontent.com/images/2ce20bbc-6692-4829-8d1a-75c83e376f53.png)
 
+### Fullscreen Search
+![Fullscreen Search](https://screenshots.firefoxusercontent.com/images/bd0d9028-c2e2-414e-81ff-494ebecbc739.png)
+
+#### Results
+![Search Results](https://screenshots.firefoxusercontent.com/images/995a7d83-4cf5-468b-bd54-b93786a71181.png)
+
 ## ToDo
 Features that I would like to add to the site.
 
