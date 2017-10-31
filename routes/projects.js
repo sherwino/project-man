@@ -171,15 +171,16 @@ projectRouter.get('/projects/:id/edit',
 
   (req, res, next) => {
 
+  //search for the project defined in URL
+  // lets start by creating a variable that equal the :id passed in the URL
   const projectId   = req.params.id;
-  //search for the product defined in URL
   Project.findById(projectId, (err, theProject) => {
     if (err) {
       next(err);
       return;
     }
   res.render('projects/edit-project-view.ejs', {
-    title:    'Project Man - Edit project',
+    title:    'Edit Project',
     layout:   'layouts/list-layout',
     job:       theProject,
     errors:    theProject.errors
@@ -192,7 +193,7 @@ projectRouter.get('/projects/:id/edit',
 //
 //                      remeber :id is just a placeholder
 //                      it could be whatever you want
-projectRouter.patch('/projects/:id/edit', (req, res, next) => {
+projectRouter.patch('/projects/:id/edit-project', (req, res, next) => {
   const projectId = req.params.id;
 
   const projectChanges = {
@@ -224,7 +225,7 @@ projectRouter.patch('/projects/:id/edit', (req, res, next) => {
     jobProfit:      req.body.jobProfit,
     jobCurrProfit:  req.body.jobCurrProfit,
     jobMaterialExp: req.body.jobMaterialExp,
-    createdBy:      Project.createdBy, //should add a eddited by in the model
+    createdBy:      Project.createdBy, //should add a edited by in the model
     updatedBy:      req.user._id
   };
 //this new method has three arguments

@@ -50,15 +50,14 @@ Here are some screenshots showing the latest version of the site.
 Features that I would like to add to the site.
 
 - You should be able to search all fields, right now you could only search job name
-- Fuzzy search, should let people get results even if they make a typo, often co-workers don't know how a job is spelled
-- 
+- Fuzzy search, should let people get results even if they make a typo, often co-workers don't know how a job is spelled.
 
 ## Known Issues
 A checkmark would imply that I have fixed one of the issues. 
 
 - [ ] NaN --- I know how to solve this but I haven't had the change to get to it
-- [ ]Empty fields in the project log, this is related to the NaN issue
-- [ ]Forms get angry at you when you leave the picture upload section blank, *what if you don't want to send a pic?*
+- [ ] Empty fields in the project log, this is related to the NaN issue
+- [ ] Forms get angry at you when you leave the picture upload section blank, *what if you don't want to send a pic?*
 - [ ] You should be able to click on the job type/client and any other categories to give you a list of jobs by in that category.
 - [ ] This one is big...when you EDIT a project, the post/update request creates a new entry in the DB
 
