@@ -65,8 +65,6 @@ projectRouter.post('/projects',
 
   (req, res, next) => {
 
-    console.log('FILE UPLOAD ------------------------');
-    console.log('Successfully uploaded ' + req.file);
     // res.status(204).end();
     const theProject = new Project ({
 
@@ -78,8 +76,6 @@ projectRouter.post('/projects',
       jobSubs:        req.body.jobSubs,
       jobType:        req.body.jobType,
       jobFee:         req.body.jobFee,
-      jobImg:         `${req.file.location}`,
-      // jobRenderImg:   `/uploads/${req.body.picName}`,
       jobAddress:     req.body.jobAddress,
       jobMasterperm:  req.body.jobMasterperm,
       jobPlbperm:     req.body.jobPlbperm,
@@ -102,6 +98,17 @@ projectRouter.post('/projects',
       updatedBy:      req.user._id
 
     });
+
+        //check if user uploaded a file, if they did replace the existing value
+        if (req.file) {
+          console.log('FILE UPLOAD ------------------------');
+          console.log('Successfully uploaded ' + req.file.name);
+          theProject.jobImg = req.file.location;
+    
+        } else {
+          //if they didn't upload or replace the original image
+          console.log('No changes to the image, keeping the on in the DB');
+        }
 
     theProject.save((err) => {
       console.log('attempted to post form into DB');
@@ -182,7 +189,6 @@ projectRouter.get('/projects/:id/edit',
       return;
     }
   res.locals.project = theProject;
-  req.project = theProject;
   res.render('projects/edit-project-view.ejs', {
     title:    'Edit Project',
     layout:   'layouts/list-layout',
@@ -210,7 +216,7 @@ projectRouter.post('/projects/:id/update',
 
     console.log("Got the post request for: " + projectId);
 
-    console.log('Created By: ' + Project.createdBy);
+    console.log('Created By: ');
 
     const projectChanges = {
       //the key is from the model, and the value is from the input form
@@ -222,8 +228,6 @@ projectRouter.post('/projects/:id/update',
       jobSubs:        req.body.jobSubs,
       jobType:        req.body.jobType,
       jobFee:         req.body.jobFee,
-      // jobImg:         req.body.jobImg,
-      // jobRenderImg:   `/uploads/${req.body.picName}`,
       jobAddress:     req.body.jobAddress,
       jobMasterperm:  req.body.jobMasterperm,
       jobPlbperm:     req.body.jobPlbperm,
@@ -242,7 +246,6 @@ projectRouter.post('/projects/:id/update',
       jobProfit:      req.body.jobProfit,
       jobCurrProfit:  req.body.jobCurrProfit,
       jobMaterialExp: req.body.jobMaterialExp,
-      // createdBy:      req.user.name, //should add a edited by in the model
       updatedBy:      req.user._id
 
     };
