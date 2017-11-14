@@ -57,10 +57,10 @@
 							<a href="/projects/<%= job._id %>"><%= job.jobName %></a>
 						</td>
 						<td>
-							<a href="/projects/<%= job.jobClient %>"><%= job.jobClient %></a>
+							<a href="/projects/client/<%= job.jobClient %>"><%= job.jobClient %></a>
 						</td>
 						<td>
-							<a href="/projects/<%= job.jobType %>"><%= job.jobType %></a>
+							<a href="/projects/type/<%= job.jobType %>"><%= job.jobType %></a>
 						</td>
 						<!-- FROM HERE ON.....ONLY ADMINS COULD VIEW THIS -->
 						<% if (user.role == 'admin') { %>

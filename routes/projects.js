@@ -149,7 +149,7 @@ projectRouter.get('/projects',
   });
 
 // LIST OF PROJECTS BY CLIENT ROUTE  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-projectRouter.get('/projects/:jobClient',
+projectRouter.get('/projects/client/:jobClient',
   ensure.ensureLoggedIn('/login'),
 
   (req, res, next ) => {
@@ -173,6 +173,33 @@ projectRouter.get('/projects/:jobClient',
       });
     });
   });
+
+// LIST OF PROJECTS BY TYPE ROUTE  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+projectRouter.get('/projects/type/:jobType',
+  ensure.ensureLoggedIn('/login'),
+
+  (req, res, next ) => {
+    const type = req.params.jobType;
+    //give me all of the projects, but sort them
+    // { owner:    req.user._id },
+    Project
+    .find({ jobType: type })
+    .sort( { jobNumber: 1})
+    .exec((err, projectsList) => {
+      if (err) {
+        next(err);
+        return;
+      }
+      res.render('projects/project-list-view.ejs', {
+        title:              'Project Man - Project Log',
+        layout:             'layouts/list-layout',
+        projects:           projectsList,
+        successMessage:     req.flash('success'),
+        user:               req.user
+      });
+    });
+  });
+
 
 
 // SINGLE PROJECT PAGE ROUTE  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
