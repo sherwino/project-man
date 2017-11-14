@@ -53,6 +53,17 @@ const projectSchema = new Schema(
 
 );
 
+projectSchema.index(
+    { 
+        jobYear: "text",
+        jobNumber: "text",
+        jobName: "text",
+        jobClient: "text",
+        jobSubs: "text",
+        jobType: "text"
+    }
+);            
+
 const Project = mongoose.model('Project', projectSchema);
 
 module.exports = Project;

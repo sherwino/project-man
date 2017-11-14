@@ -361,26 +361,35 @@ projectRouter.get('/search', (req, res, next) => {
   }
 
 // "nintendo" turns in the reg expression nintendo so anything that matches would be foudn
+
+  // const searchRegex = searchTerm; 
   const searchRegex = new RegExp(searchTerm, 'i');
   console.log(searchRegex);
 
-  Project.find(
-    { jobName: searchRegex },
+  Project.find({ $or: 
+    [
+      { jobYear: searchRegex },
+      { jobNumber: searchRegex },
+      { jobName: searchRegex },
+      { jobClient: searchRegex },
+      { jobType: searchRegex },
+    ]}, 
+
     (err, searchResults) => {
       if (err) {
         next(err);
         return;
-      }
-        res.render('projects/project-list-view.ejs', {
-          title:              `Project Man - ${searchRegex}`,
-          layout:             'layouts/list-layout',
-          projects:            searchResults,
-          successMessage:     req.flash('success'),
-          user:               req.user
+    }
 
-        });
-      }
-  );
+  res.render('projects/project-list-view.ejs', {
+    title:              `Project Man - ${searchRegex}`,
+    layout:             'layouts/list-layout',
+    projects:            searchResults,
+    successMessage:     req.flash('success'),
+    user:               req.user
+
+  });
+  });
 });
 
 
