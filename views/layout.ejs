@@ -30,15 +30,15 @@
       			<ul class="nav navbar-nav navbar-right">
               <% if (typeof user !== 'undefined') { %>
         			    <li><a href="/projects">Projects</a></li>
-        			    <li><a href="https://app.asana.com/">Task List</a></li>
-        			    <li><a href="https://gmconsulting.tsheets.com/page/login">Time Sheet</a></li>
-        			    <li><a href="/expense">Expense Reports</a></li>
+        			    <li><a href="https://app.asana.com/" target="_blank">Task List</a></li>
+        			    <li><a href="https://gmconsulting.tsheets.com/page/login" target="_blank">Time Sheet</a></li>
+        			    <li><a href="https://docs.google.com/spreadsheets/d/1KhD-FwPrQHq7nNYmPs9V769KuJtXJIzlgQBm6stQ1Fk/edit?usp=sharing" target="_blank">Expense Reports</a></li>
         			    <li><a href ="/logout">Log Out</a></li>
               <% } %>
               <% if (typeof user == 'admin') { %>
                   <li><a href="/reports">Financial Reports</a></li>
                   <li><a href="/users">Users</a></li>
-                  <li><a href="/expense">Expense Reports</a></li>
+                  <li><a href="https://docs.google.com/spreadsheets/d/1KhD-FwPrQHq7nNYmPs9V769KuJtXJIzlgQBm6stQ1Fk/edit?usp=sharing" target="_blank">Expense Reports</a></li>
               <% } if (typeof user == 'undefined') { %>
                   <li><a href="/signup"> Sign Up </a></li>
                   <li><a href="/login"> Log In </a></li>
