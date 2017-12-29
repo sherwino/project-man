@@ -32,34 +32,37 @@ Site was built using:
 Here are some screenshots showing the latest version of the site.
 
 ### Home Page
-![Home Page](https://screenshots.firefoxusercontent.com/images/e93384da-5a12-4c39-86a4-a55bd0e097b3.png)
+![Home Page](https://i.gyazo.com/f0f08b9968a9a0154ddee8d843b7925d.jpg)
 
 ### Login (don't know why I am showing this)
-![Login Page](https://screenshots.firefoxusercontent.com/images/eb459feb-4c05-443a-be45-0772e43a92a0.png)
+![Login Page](https://i.gyazo.com/c087d4dea264a9bf057646f4fca4b5bd.png)
 
 ### Project Log (for regular users)
-![Project Log Page](https://screenshots.firefoxusercontent.com/images/2ce20bbc-6692-4829-8d1a-75c83e376f53.png)
+![Project Log Page](https://i.gyazo.com/3c57859d1d8d0a73acb2246543d99c70.png)
 
 ### Fullscreen Search
-![Fullscreen Search](https://screenshots.firefoxusercontent.com/images/bd0d9028-c2e2-414e-81ff-494ebecbc739.png)
+![Fullscreen Search](https://i.gyazo.com/ab6cdd7f3cba892b65861c1572c771b6.png)
 
 #### Results
-![Search Results](https://screenshots.firefoxusercontent.com/images/995a7d83-4cf5-468b-bd54-b93786a71181.png)
+![Search Results](https://i.gyazo.com/d83e1b73a59655c86188ba8804d9921c.jpg)
+
+### Project Page (work in progress)
+![Project Page](https://i.gyazo.com/6b4f8d79ddf5b6b357e01afaaf9ce196.jpg)
 
 ## ToDo
 Features that I would like to add to the site.
 
-- You should be able to search all fields, right now you could only search job name
-- Fuzzy search, should let people get results even if they make a typo, often co-workers don't know how a job is spelled.
+- You should be able to search all fields, and you can now, except for the imported jobs one of the csv fields didn't match.
+- Fuzzy search, should let people get results even if they make a typo, often co-workers don't know how a job is spelled. The regex I have now allows for partial search, lowercase, uppercase. 
 
 ## Known Issues
 A checkmark would imply that I have fixed one of the issues. 
 
 - [ ] NaN --- I know how to solve this but I haven't had the change to get to it
 - [ ] Empty fields in the project log, this is related to the NaN issue
-- [ ] Forms get angry at you when you leave the picture upload section blank, *what if you don't want to send a pic?*
-- [ ] You should be able to click on the job type/client and any other categories to give you a list of jobs by in that category.
-- [ ] This one is big...when you EDIT a project, the post/update request creates a new entry in the DB
+- [x] Forms get angry at you when you leave the picture upload section blank, *what if you don't want to send a pic?*
+- [x] You should be able to click on the job type/client and any other categories to give you a list of jobs by in that category.
+- [x] This one is big...when you EDIT a project, the post/update request creates a new entry in the DB
 
 ### Change Log
 Extended descriptions of what has changed with each commit.
