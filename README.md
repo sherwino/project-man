@@ -43,7 +43,7 @@ Here are some screenshots showing the latest version of the site.
 ### Fullscreen Search
 ![Fullscreen Search](https://i.gyazo.com/ab6cdd7f3cba892b65861c1572c771b6.png)
 
-#### Results
+### Results
 ![Search Results](https://i.gyazo.com/d83e1b73a59655c86188ba8804d9921c.jpg)
 
 ### Project Page (work in progress)
